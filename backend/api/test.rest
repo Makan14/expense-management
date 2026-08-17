@@ -1,0 +1,50 @@
+# je cree mes api
+# POST pr cree 1 transaction et GET pr recup ls transactions
+POST http://127.0.0.1:8000//api/transactions/
+# l element qu on veut envoyer et en json
+Content-Type: application/json 
+
+# je met les 2 infos
+{
+    "text" : "Salaire Juin",
+    "amount" : -2000.00
+}
+
+
+# pr separer ls api
+###
+
+# je cree la liste de tte ls transactions
+GET http://127.0.0.1:8000//api/transactions/
+
+
+
+###
+DELETE http://127.0.0.1:8000//api/transactions/0e81b024-e237-43d3-90a4-fae8ce263438/
+
+
+
+###
+# PUT veut garder tte ls infos pr ensuite faires 1 maj et il utiliser du json
+# PATCH n'a pas besoin de garde tte les info pr faire 1 maj et il utiliser du json
+
+PUT http://127.0.0.1:8000//api/transactions/0781b42c-8ebc-40e9-92ab-d5ffb1de56ae/
+# l element qu on veut envoyer et en json
+Content-Type: application/json 
+
+# je met les 2 infos
+{
+    "text" : "Salaire Fevrier",
+    "amount" : 6000.00
+}
+
+###
+PATCH http://127.0.0.1:8000//api/transactions/0781b42c-8ebc-40e9-92ab-d5ffb1de56ae/
+# l element qu on veut envoyer et en json
+Content-Type: application/json 
+
+# je met les 2 infos
+{
+    
+    "amount" : 7000.00
+}

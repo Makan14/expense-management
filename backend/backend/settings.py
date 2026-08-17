@@ -27,6 +27,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # je déclare les applications (backend et api) que j ai crée
+    # je lui dit va dns le dossier api ensuite dsn le fichier apps et utilise la class ApiConfig
+    'api.apps.ApiConfig',
+
+    #je declare restframework (l extension qui permet de cree ds api rest)
+    'rest_framework'
+
 ]
 
 MIDDLEWARE = [
