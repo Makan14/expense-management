@@ -1,0 +1,11 @@
+@import "tailwindcss";
+/* j installe daisyui */
+/* et npm i -D daisyui@latest dns l invite de commande */
+/* j utilise le theme night */
+@plugin "daisyui"{
+  themes: night;
+};
+
+button{
+  border-radius: 0.4rem;
+}
