@@ -1,8 +1,9 @@
 // je précise que cst 1 composant client
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "./api";
+import toast from "react-hot-toast";
 
 // je crée 1 type qui represente chaque transaction 
 type Transaction = {
@@ -30,11 +31,20 @@ export default function Home() {
 
       // je recup le tableau const [transactions, setTransactions]
       setTransactions(res.data) 
+      // j importe toast
+      toast.success("Transactions chargées") 
+
     }catch (error){
+      console.error("Erreur chargement transactions", error);
+      toast.error("Erreur chargement transactions");
 
     }
   }
-
+    // j appel la fonction getTransactions aux chargement de la page
+    useEffect(() => {
+      getTransactions()
+    }, []);
+    
   return (
       <button className="btn btn-sm">
         test
