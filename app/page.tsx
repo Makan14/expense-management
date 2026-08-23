@@ -35,7 +35,7 @@ export default function Home() {
       toast.success("Transactions chargées") 
 
     }catch (error){
-      console.error("Erreur chargement transactions", error);
+      console.error("Erreur chargement transactions", error); 
       toast.error("Erreur chargement transactions");
 
     }
@@ -44,6 +44,12 @@ export default function Home() {
     useEffect(() => {
       getTransactions()
     }, []);
+
+    // 1 const amounts qui contient tte ls transactions, il va itéré sur le tableau et sur chaqsue transaction (t) ensuite il va convertir en number le champ amount de chauqe transaction
+    const amounts = transactions.map((t) =>Number(t.amount) || 0)  
+
+    // reduce pr faire des calculs rapidement , il cree 1 variable acc et il recup 1 item (amounts le montant dns ls trasactions) puis il additionne acc et item et met par defaut acc à 0 et si amounts n a pas été calculé il met a 0
+    const balance = amounts.reduce((acc, item) => acc + item, 0) || 0
     
   return (
       <button className="btn btn-sm">
