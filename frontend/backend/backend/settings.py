@@ -45,14 +45,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # pr accepter ls appel ds api
-    'corsheaders.middleware.CorsMiddleware',
-]
-
-# je donne le port autorisé à appler une api
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"  
 ]
 
 ROOT_URLCONF = 'backend.urls'
