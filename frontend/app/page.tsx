@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import api from "./api";
 import toast from "react-hot-toast";
+import { ArrowDownCircle, ArrowUpCircle, Wallet } from "lucide-react"
 
 // je crée 1 type qui represente chaque transaction 
 type Transaction = {
@@ -74,7 +75,45 @@ export default function Home() {
     
   return (
     <div className="w-2/3 flex flex-col gap-4">
-      <div className="flex justify-between rounded-2x1 border-2 border-warning/20 border-dashed bg-warning/5 p-5">
+      <div className="flex justify-between rounded-2x1 border-2 border-warning/10 border-dashed bg-warning/5 p-5">
+
+        <div className="flex flex-col gap-1">
+            <div className="badge badge-soft">
+              <Wallet className="w-4 h4"/>
+              Votre Solde
+            </div>
+      
+          <div className="stat-value">
+            {/* je met balance (le montant) et tofixed pr fixer le nombre de chiffre apres la virgule */}
+            {balance.toFixed(2)} €
+          </div>
+
+        </div>
+
+        <div className="flex flex-col gap-1">
+            <div className="badge badge-soft badge-success">
+              <ArrowUpCircle className="w-4 h4"/>
+              Revenus
+            </div>
+      
+          <div className="stat-value">
+            {/* je met balance (le montant) et tofixed pr fixer le nombre de chiffre apres la virgule */}
+            {income.toFixed(2)} €
+          </div>
+
+        </div>
+        <div className="flex flex-col gap-1">
+            <div className="badge badge-soft badge-error">
+              <ArrowDownCircle className="w-4 h4"/>
+              Dépenses
+            </div>
+      
+          <div className="stat-value">
+            {/* je met balance (le montant) et tofixed pr fixer le nombre de chiffre apres la virgule */}
+            {expense.toFixed(2)} €
+          </div>
+
+        </div>
         
 
       </div>
