@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import api from "./api";
 import toast from "react-hot-toast";
-import { ArrowDownCircle, ArrowUpCircle, Wallet } from "lucide-react"
+import { Activity, ArrowDownCircle, ArrowUpCircle, PlusCircle, Trash, TrendingDown, TrendingUp, Wallet } from "lucide-react"
 
 // je crée 1 type qui represente chaque transaction 
 type Transaction = {
@@ -41,7 +41,23 @@ export default function Home() {
 
     }
   }
-    // j appel la fonction getTransactions aux chargement de la page
+
+  // je cree 1 fonction deleteTransactions 
+  // dns async je met l id de l element a supp
+  const deleteTransactions = async(id : string)=>{
+    try{
+      
+      await api.delete(`transactions/${id}/`)   
+      // je recup la fonction qui appel ls transaction
+      getTransactions()
+     
+      toast.success("Transactions supprimée avec succès") 
+
+    }catch (error){
+      console.error("Erreur suppression transactions", error); 
+      toast.error("Erreur suppression transactions");
+    }
+  }
     useEffect(() => {
       getTransactions()
     }, []);
@@ -117,6 +133,80 @@ export default function Home() {
         
 
       </div>
+
+      <div className="rounded-2x1 border-2 border-warning/10 border-dashed bg-warning/5 p-5">
+        <div className="flex justify-between items-center mb-1">
+        
+            <div className="badge badge-soft badge-warning gap-1">
+              <Activity className="w-4 h-4"/>
+              Dépenses vs Revenus
+            </div>
+            {/* je fixe le ratio à 0 */}
+            <div>{ratio.toFixed(0)}%</div>           
+        </div>
+        
+        {/* barre de progression */} 
+        <progress className="progress progress-warning w-full" value={ratio} max={100}> 
+              
+        </progress>
+      </div>
+
+      {/* button */}
+      {/*pr add 1 ligne dns mn tableau */}
+      <button className="btn btn-warning" onClick={()=>(document.getElementById('my_modal_3') as HTMLDialogElement).showModal()}>
+        <PlusCircle className="w-4 h-4"/> 
+        Ajouter une transaction
+      </button>
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          </form>
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">Press ESC key or click on ✕ button to close</p>
+        </div>
+      </dialog>
+
+    {/* TABLEAU */}
+  <div className="overflow-x-auto rounded-2x1 border-2 border-warning/10 border-dashed bg-warning/5">
+  <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>Montant</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {/* je vais itérer transaction sur chaque element */} 
+      {transactions.map((t, index) => ( 
+        <tr key = {t.id}>
+          <th>{index + 1}</th>
+          <td>{t.text}</td>
+          <td className="font-semibold flex items-center gap-2">
+            {t.amount > 0 ? (<TrendingUp className="text-success w-6 h-6"/>) : (<TrendingDown className="text-warnning w-6 h-6"/>)}
+            {t.amount > 0 ? `+${t.amount}` : `-${t.amount}`}
+          </td>
+          <td>{formatDate(t.created_at)}</td>
+          <td>
+            <button onClick={() => deleteTransactions(t.id)} className="btn btn-sm btn-error btn-soft" title="Supprimer">
+              <Trash className="w-4 h-4"/>
+            </button>
+          </td>
+        </tr>
+
+      ))}
+
+      
+     
+    </tbody>
+  </table>
+</div>
     </div>
       
   );
