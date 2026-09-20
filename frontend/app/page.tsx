@@ -21,6 +21,12 @@ export default function Home() {
   // dns usestate je precise ce que le tableau transaction va contenir un tableau qui par default ne contient rien
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
+  // l user fourni 2 info le text et le montant
+  const [text, setText] = useState<string>("")
+  const [amount, setAmount] = useState<number | "">("")
+  //                            number ou chaine de caractere
+  const [loading, setLoading] = useState(false)
+
   // je cree 1 fonction pr chargé 1 transaction
   // assync pr appelé 1 api
   const getTransactions = async()=>{
@@ -58,6 +64,38 @@ export default function Home() {
       toast.error("Erreur suppression transactions");
     }
   }
+
+  // pour l'ajout du formulaire
+    const addTransactions = async()=>{
+      if(!text || amount == "" || isNaN(Number(amount))){
+        toast.error("Merci de remplir texte et montant valides"); 
+        return
+      }
+      setLoading(true)
+
+      try{        
+        const res = await api.post<Transaction>(`transactions/` ,{
+          text,
+          amount : Number(amount) 
+        })   
+        // je recup la fonction qui appel ls transaction
+        getTransactions()
+        const modal = document.getElementById('my_modal_3') as HTMLDialogElement
+        if(modal){
+          modal.close()
+        }
+      
+        toast.success("Transactions ajoutée avec succès") 
+        setText("")
+        setAmount("")
+      }catch (error){
+        console.error("Erreur ajout transactions", error); 
+        toast.error("Erreur ajout transactions"); 
+      }finally{
+        setLoading(false) 
+      }
+  }
+
     useEffect(() => {
       getTransactions()
     }, []);
@@ -157,16 +195,8 @@ export default function Home() {
         <PlusCircle className="w-4 h-4"/> 
         Ajouter une transaction
       </button>
-      <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-          </form>
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click on ✕ button to close</p>
-        </div>
-      </dialog>
+      {/* backdrop-blur pr add du flou */}
+     
 
     {/* TABLEAU */}
   <div className="overflow-x-auto rounded-2x1 border-2 border-warning/10 border-dashed bg-warning/5">
@@ -189,8 +219,8 @@ export default function Home() {
           <th>{index + 1}</th>
           <td>{t.text}</td>
           <td className="font-semibold flex items-center gap-2">
-            {t.amount > 0 ? (<TrendingUp className="text-success w-6 h-6"/>) : (<TrendingDown className="text-warnning w-6 h-6"/>)}
-            {t.amount > 0 ? `+${t.amount}` : `-${t.amount}`}
+            {t.amount > 0 ? (<TrendingUp className="text-success w-6 h-6"/>) : (<TrendingDown className="text-error w-6 h-6"/>)}
+            {t.amount > 0 ? `+${t.amount}` : `${t.amount}`}
           </td>
           <td>{formatDate(t.created_at)}</td>
           <td>
@@ -201,13 +231,38 @@ export default function Home() {
         </tr>
 
       ))}
-
-      
-     
+    
     </tbody>
   </table>
 </div>
-    </div>
+
+ <dialog id="my_modal_3" className="modal backdrop-blur">
+        <div className="modal-box border-2 border-warning/10 border-dashed">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          </form>
+          <h3 className="font-bold text-lg">Ajouter une transaction</h3>
+          <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col gap-2">
+              <label className="label">Texte</label>
+              <input type="text" name="text" value={text}  onChange={(e) => setText(e.target.value)} placeholder="Entrez le texte..." className="input w-full"/>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="label">Montant (négatif - dépense, positif - revenu)</label>
+              {/*                                                                               je converti amount en number */}
+              <input type="number" name="amount" value={amount}  onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))} placeholder="Entrez le texte..." className="input w-full"/>
+            </div>
+
+            <button className="w-full btn btn-warning" onClick={addTransactions} disabled={loading}>
+              <PlusCircle className="w-4 h-4"/>
+              Ajouter 
+            </button>
+          </div>
+          
+        </div>
+      </dialog>
+  </div>
       
   );
 }
