@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-nlgbft=tv2xdf=^1fq+p$zb!9#^zfinhv%up66=tg757eaybjp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -52,7 +52,8 @@ MIDDLEWARE = [
 
 # je donne le port autorisé à appler une api
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"  
+    "http://localhost:3000",
+    "https://expense-management-git-master-makan5.vercel.app",
 ]
 
 ROOT_URLCONF = 'backend.urls'
