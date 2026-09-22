@@ -53,8 +53,9 @@ MIDDLEWARE = [
 # je donne le port autorisé à appler une api
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://expense-management-git-master-makan5.vercel.app",
-    "https://expense-management-eight-rho.vercel.app",   # ← AJOUTEZ CETTE LIGNE
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://expense-management-.*\.vercel\.app$",
 ]
 
 ROOT_URLCONF = 'backend.urls'
