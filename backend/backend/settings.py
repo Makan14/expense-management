@@ -54,6 +54,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://expense-management-git-master-makan5.vercel.app",
+    "https://expense-management-eight-rho.vercel.app",   # ← AJOUTEZ CETTE LIGNE
 ]
 
 ROOT_URLCONF = 'backend.urls'
